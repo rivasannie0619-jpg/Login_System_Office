@@ -47,16 +47,6 @@
                         </a>
                     </div>
                 </div>
-
-                <div class="w-64">
-                    <select name="range" class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:ring-gray-800 focus:border-gray-800 px-3 py-2">
-                        <option value="">{{ __('Select Filter') }}</option>
-                        <option value="today" @selected(($filters['range'] ?? '') === 'today')>{{ __('Today') }}</option>
-                        <option value="week" @selected(($filters['range'] ?? '') === 'week')>{{ __('This Week') }}</option>
-                        <option value="month" @selected(($filters['range'] ?? '') === 'month')>{{ __('This Month') }}</option>
-                    </select>
-                    <input type="hidden" name="status" value="{{ $filters['status'] ?? '' }}">
-                </div>
             </form>
 
             <div class="bg-white shadow-sm sm:rounded-lg overflow-hidden">
