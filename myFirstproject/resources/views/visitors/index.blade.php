@@ -1,20 +1,25 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between w-full">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-bold text-xl text-gray-800 leading-tight">
                 {{ __('Guest & Visitor Log') }}
             </h2>
-            <div class="flex gap-2">
+            <div class="flex items-center gap-2">
+                <!-- Report Button with Hover -->
                 <a href="{{ route('visitors.report') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 transition">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-slate-200 rounded-lg font-bold text-xs text-slate-500 uppercase tracking-wider hover:bg-slate-50 hover:text-slate-700 active:scale-95 transition-all duration-150">
                     {{ __('Report') }}
                 </a>
+                
+                <!-- Print Button with Hover -->
                 <a href="{{ route('visitors.print', request()->query()) }}" target="_blank"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 transition">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-slate-200 rounded-lg font-bold text-xs text-slate-500 uppercase tracking-wider hover:bg-slate-50 hover:text-slate-700 active:scale-95 transition-all duration-150">
                     {{ __('Print') }}
                 </a>
+                
+                <!-- + ADD VISITOR Button with Hover & Active Scale -->
                 <button type="button" onclick="document.getElementById('add-visitor-modal').classList.remove('hidden')"
-                        class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover:bg-gray-700 transition">
+                        class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-md shadow-indigo-500/20 hover:shadow-lg active:scale-95 transition-all duration-150 transform hover:-translate-y-0.5">
                     + {{ __('Add Visitor') }}
                 </button>
             </div>
@@ -25,109 +30,152 @@
         <div class="mx-auto space-y-6">
 
             @if (session('success'))
-                <div class="rounded-md bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-800">
+                <div class="rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-800">
                     {{ session('success') }}
                 </div>
             @endif
 
-            <form method="GET" action="{{ route('visitors.index') }}" class="flex flex-col md:flex-row gap-3 items-center justify-between">
-                <div class="flex flex-col sm:flex-row gap-1.5 items-center">
-                    <input type="text" name="search" value="{{ $filters['search'] ?? '' }}"
-                           placeholder="{{ __('Search...') }}"
-                           class="w-64 border-gray-300 rounded-md shadow-sm focus:ring-gray-800 focus:border-gray-800 text-sm px-3 py-2">
-
-                    <div class="flex gap-1.5">
-                        <button type="submit"
-                                class="inline-flex items-center px-3 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover:bg-gray-700 transition whitespace-nowrap">
-                            {{ __('Search') }}
-                        </button>
-                        <a href="{{ route('visitors.index') }}"
-                           class="inline-flex items-center px-3 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-600 uppercase tracking-widest shadow-sm hover:bg-gray-50 transition whitespace-nowrap">
-                            {{ __('Reset') }}
-                        </a>
+            <!-- Search & Filter Bar Section -->
+            <form method="GET" action="{{ route('visitors.index') }}" class="flex items-center gap-2.5">
+                <!-- Search Input (Icon on Left - Non-overlapping) -->
+                <div class="relative w-64 flex items-center">
+                    <div class="absolute left-3 flex items-center pointer-events-none">
+                        <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
                     </div>
+                    <input type="text" name="search" value="{{ $filters['search'] ?? '' }}"
+                           placeholder="{{ __('Search..') }}"
+                           class="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm transition-all duration-150">
                 </div>
+
+                <!-- Just "APPLY" Button with Hover & Action Feedback -->
+                <button type="submit"
+                        class="inline-flex items-center px-5 py-2 bg-indigo-600 hover:bg-indigo-700 border border-transparent rounded-lg font-bold text-xs text-white uppercase tracking-wider shadow-sm hover:shadow active:scale-95 transition-all duration-150 whitespace-nowrap">
+                    {{ __('Apply') }}
+                </button>
+                
+                <!-- Reset Button with Hover & Action Feedback -->
+                <a href="{{ route('visitors.index') }}"
+                   class="inline-flex items-center px-5 py-2 bg-white border border-slate-200 rounded-lg font-bold text-xs text-slate-400 uppercase tracking-wider hover:bg-slate-50 hover:text-slate-600 active:scale-95 transition-all duration-150 whitespace-nowrap">
+                    {{ __('Reset') }}
+                </a>
             </form>
 
-            <div class="bg-white shadow-sm sm:rounded-lg overflow-hidden w-full">
-                <table class="w-full table-fixed divide-y divide-gray-200 text-sm">
-                    <thead class="bg-gray-50">
+            <!-- Table Card -->
+            <div class="bg-white shadow-sm rounded-xl overflow-hidden w-full border border-slate-100">
+                <table class="w-full table-fixed divide-y divide-slate-100 text-sm">
+                    <thead class="bg-slate-50/50">
                         <tr>
-                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[11%]">{{ __('Name') }}</th>
-                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[11%]">{{ __('Contact No.') }}</th>
-                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[12%]">{{ __('From / Address') }}</th>
-                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[12%]">{{ __('Person to Visit') }}</th>
-                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[10%]">{{ __('Purpose') }}</th>
-                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[10%]">{{ __('Time In') }}</th>
-                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[10%]">{{ __('Time Out') }}</th>
-                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[9%]">{{ __('Status') }}</th>
-                            <th class="px-4 py-4 text-right font-semibold text-gray-600 uppercase text-xs w-[15%]">{{ __('Actions') }}</th>
+                            <th class="px-4 py-4 text-left font-bold text-slate-400 uppercase text-xs w-[11%]">{{ __('Name') }}</th>
+                            <th class="px-4 py-4 text-left font-bold text-slate-400 uppercase text-xs w-[11%]">{{ __('Contact No.') }}</th>
+                            <th class="px-4 py-4 text-left font-bold text-slate-400 uppercase text-xs w-[12%]">{{ __('From / Address') }}</th>
+                            <th class="px-4 py-4 text-left font-bold text-slate-400 uppercase text-xs w-[12%]">{{ __('Person to Visit') }}</th>
+                            <th class="px-4 py-4 text-left font-bold text-slate-400 uppercase text-xs w-[10%]">{{ __('Purpose') }}</th>
+                            <th class="px-4 py-4 text-left font-bold text-slate-400 uppercase text-xs w-[10%]">{{ __('Time In') }}</th>
+                            <th class="px-4 py-4 text-left font-bold text-slate-400 uppercase text-xs w-[10%]">{{ __('Time Out') }}</th>
+                            <th class="px-4 py-4 text-left font-bold text-slate-400 uppercase text-xs w-[10%]">{{ __('Status') }}</th>
+                            <!-- Binabaan ang width % para mas siksik at magkakatabi ang icons -->
+                            <th class="px-4 py-4 text-right font-bold text-slate-400 uppercase text-xs w-[10%]">{{ __('Actions') }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100">
+                    <tbody class="divide-y divide-slate-100">
                         @forelse ($visitors as $visitor)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-4 font-medium text-gray-800 truncate">{{ $visitor->name }}</td>
-                                <td class="px-4 py-4 text-gray-600">{{ $visitor->contact_no ?? '—' }}</td>
-                                <td class="px-4 py-4 text-gray-600 truncate">{{ $visitor->address }}</td>
-                                <td class="px-4 py-4 text-gray-600 truncate">{{ $visitor->person_to_visit }}</td>
-                                <td class="px-4 py-4 text-gray-600 truncate">{{ $visitor->purpose }}</td>
-                                <td class="px-4 py-4 text-gray-600 text-xs">{{ $visitor->time_in->format('M d, Y h:i A') }}</td>
-                                <td class="px-4 py-4 text-gray-600 text-xs">
+                            <tr class="hover:bg-slate-50/50 transition">
+                                <td class="px-4 py-4 font-semibold text-slate-800 truncate">{{ $visitor->name }}</td>
+                                <td class="px-4 py-4 text-slate-500">{{ $visitor->contact_no ?? '—' }}</td>
+                                <td class="px-4 py-4 text-slate-500 truncate">{{ $visitor->address }}</td>
+                                <td class="px-4 py-4 text-slate-500 truncate font-medium">{{ $visitor->person_to_visit }}</td>
+                                <td class="px-4 py-4 text-slate-500 truncate">{{ $visitor->purpose }}</td>
+                                <td class="px-4 py-4 text-slate-400 text-xs">{{ $visitor->time_in->format('M d, Y h:i A') }}</td>
+                                <td class="px-4 py-4 text-slate-400 text-xs">
                                     {{ $visitor->time_out ? $visitor->time_out->format('M d, Y h:i A') : '—' }}
                                 </td>
+                                
+                                <!-- Status Column -->
                                 <td class="px-4 py-4">
                                     @if ($visitor->time_out)
-                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600">{{ __('Checked Out') }}</span>
+                                        <span class="inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">
+                                            {{ __('OUT') }}
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 15H19M9 5a9 9 0 0112.42 7.22"></path>
+                                            </svg>
+                                        </span>
                                     @else
-                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700">{{ __('Inside') }}</span>
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-slate-100 text-slate-700 border border-slate-200">
+                                            {{ __('Inside') }}
+                                        </span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-4 text-right space-x-1.5 whitespace-nowrap">
-                                    <button type="button" onclick="openViewModal({{ $visitor->id }})"
-                                       class="text-xs font-semibold text-blue-600 hover:text-blue-800">
-                                        {{ __('View') }}
-                                    </button>
-                                    <button type="button" onclick="openEditModal({{ $visitor->id }})"
-                                       class="text-xs font-semibold text-yellow-600 hover:text-yellow-800">
-                                        {{ __('Edit') }}
-                                    </button>
-                                    @unless ($visitor->time_out)
-                                        <form method="POST" action="{{ route('visitors.checkout', $visitor) }}" class="inline">
+
+                                <!-- Actions Section: Mas siksik, malalaking icons at magkakatabi na! -->
+                                <td class="px-4 py-4 text-right whitespace-nowrap">
+                                    <div class="inline-flex items-center gap-0.5">
+                                        <!-- OUT Action Button (First in Order) -->
+                                        @unless ($visitor->time_out)
+                                            <form method="POST" action="{{ route('visitors.checkout', $visitor) }}" class="inline">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" title="Check Out" class="p-1 rounded-md bg-emerald-50 text-emerald-600 hover:bg-emerald-100 active:scale-90 transition-all">
+                                                    <!-- Pinamalaki sa w-5 h-5 -->
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        @else
+                                            <!-- Perfect Alignment Spacer para hindi umalog ang mga katabing buttons -->
+                                            <div class="w-7 h-7"></div>
+                                        @endunless
+
+                                        <!-- View Icon (Round Light Blue) -->
+                                        <button type="button" onclick="openViewModal({{ $visitor->id }})" title="View"
+                                           class="p-1 rounded-md bg-blue-50 text-blue-600 hover:bg-blue-100 active:scale-90 transition-all">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            </svg>
+                                        </button>
+
+                                        <!-- Edit Icon (Round Light Indigo) -->
+                                        <button type="button" onclick="openEditModal({{ $visitor->id }})" title="Edit"
+                                           class="p-1 rounded-md bg-indigo-50 text-indigo-600 hover:bg-indigo-100 active:scale-90 transition-all">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                            </svg>
+                                        </button>
+
+                                        <!-- Delete Icon (Round Light Red) -->
+                                        <form method="POST" action="{{ route('visitors.destroy', $visitor) }}" class="inline"
+                                              onsubmit="return confirm('{{ __('Are you sure you want to delete this record?') }}')">
                                             @csrf
-                                            @method('PATCH')
-                                            <button type="submit" class="text-xs font-semibold text-emerald-700 hover:text-emerald-900">
-                                                {{ __('Check Out') }}
+                                            @method('DELETE')
+                                            <button type="submit" title="Delete" class="p-1 rounded-md bg-rose-50 text-rose-600 hover:bg-rose-100 active:scale-90 transition-all">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 11-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                </svg>
                                             </button>
                                         </form>
-                                    @endunless
-                                    <form method="POST" action="{{ route('visitors.destroy', $visitor) }}" class="inline"
-                                    onsubmit="return confirm('{{ __('Are you sure you want to delete this record?') }}')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-xs font-semibold text-red-600 hover:text-red-800">
-                                            {{ __('Delete') }}
-                                        </button>
-                                    </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="px-5 py-10 text-center text-gray-400">
+                                <td colspan="9" class="px-5 py-10 text-center text-slate-400">
                                     {{ __('No records found.') }}
                                 </td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
-                <div class="px-5 py-3 border-t border-gray-100">
+                <div class="px-5 py-3 border-t border-slate-100 bg-slate-50/30">
                     {{ $visitors->links() }}
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Add Visitor Modal - Fixed Size & Fit -->
+    <!-- Add Visitor Modal -->
     <div id="add-visitor-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="absolute inset-0 bg-black/50" onclick="document.getElementById('add-visitor-modal').classList.add('hidden')"></div>
         <div class="relative bg-white rounded-lg shadow-xl w-full max-w-md p-5">
@@ -181,10 +229,10 @@
 
                 <div class="flex justify-end gap-2 pt-2">
                     <button type="button" onclick="document.getElementById('add-visitor-modal').classList.add('hidden')"
-                            class="px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                            class="px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 active:scale-95 transition-all">
                         {{ __('Cancel') }}
                     </button>
-                    <x-primary-button class="px-3 py-1.5 text-xs">{{ __('Save') }}</x-primary-button>
+                    <x-primary-button class="px-3 py-1.5 text-xs active:scale-95 transition-all">{{ __('Save') }}</x-primary-button>
                 </div>
             </form>
         </div>
@@ -198,7 +246,7 @@
             <div id="view-content" class="space-y-1.5 text-sm text-gray-600"></div>
             <div class="flex justify-end mt-4">
                 <button type="button" onclick="document.getElementById('view-modal').classList.add('hidden')"
-                        class="px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                        class="px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 active:scale-95 transition-all">
                     {{ __('Close') }}
                 </button>
             </div>
@@ -234,10 +282,10 @@
                 </div>
                 <div class="flex justify-end gap-2 pt-2">
                     <button type="button" onclick="document.getElementById('edit-modal').classList.add('hidden')"
-                            class="px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                            class="px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 active:scale-95 transition-all">
                         {{ __('Cancel') }}
                     </button>
-                    <x-primary-button class="px-3 py-1.5 text-xs">{{ __('Update') }}</x-primary-button>
+                    <x-primary-button class="px-3 py-1.5 text-xs active:scale-95 transition-all">{{ __('Update') }}</x-primary-button>
                 </div>
             </form>
         </div>
