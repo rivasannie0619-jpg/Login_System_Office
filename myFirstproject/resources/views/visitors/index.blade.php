@@ -49,79 +49,79 @@
                 </div>
             </form>
 
-            <div class="bg-white shadow-sm sm:rounded-lg overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full table-auto divide-y divide-gray-200 text-sm">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-5 py-4 text-left font-semibold text-gray-600 uppercase text-xs min-w-[140px]">{{ __('Name') }}</th>
-                                <th class="px-5 py-4 text-left font-semibold text-gray-600 uppercase text-xs min-w-[140px]">{{ __('Contact No.') }}</th>
-                                <th class="px-5 py-4 text-left font-semibold text-gray-600 uppercase text-xs min-w-[160px]">{{ __('From / Address') }}</th>
-                                <th class="px-5 py-4 text-left font-semibold text-gray-600 uppercase text-xs min-w-[160px]">{{ __('Person to Visit') }}</th>
-                                <th class="px-5 py-4 text-left font-semibold text-gray-600 uppercase text-xs min-w-[140px]">{{ __('Purpose') }}</th>
-                                <th class="px-5 py-4 text-left font-semibold text-gray-600 uppercase text-xs min-w-[140px]">{{ __('Time In') }}</th>
-                                <th class="px-5 py-4 text-left font-semibold text-gray-600 uppercase text-xs min-w-[140px]">{{ __('Time Out') }}</th>
-                                <th class="px-5 py-4 text-left font-semibold text-gray-600 uppercase text-xs min-w-[120px]">{{ __('Status') }}</th>
-                                <th class="px-5 py-4 text-right font-semibold text-gray-600 uppercase text-xs min-w-[280px]">{{ __('Actions') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100">
-                            @forelse ($visitors as $visitor)
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-5 py-4 font-medium text-gray-800">{{ $visitor->name }}</td>
-                                    <td class="px-5 py-4 text-gray-600">{{ $visitor->contact_no ?? '—' }}</td>
-                                    <td class="px-5 py-4 text-gray-600">{{ $visitor->address }}</td>
-                                    <td class="px-5 py-4 text-gray-600">{{ $visitor->person_to_visit }}</td>
-                                    <td class="px-5 py-4 text-gray-600">{{ $visitor->purpose }}</td>
-                                    <td class="px-5 py-4 text-gray-600">{{ $visitor->time_in->format('M d, Y h:i A') }}</td>
-                                    <td class="px-5 py-4 text-gray-600">
-                                        {{ $visitor->time_out ? $visitor->time_out->format('M d, Y h:i A') : '—' }}
-                                    </td>
-                                    <td class="px-5 py-4">
-                                        @if ($visitor->time_out)
-                                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600">{{ __('Checked Out') }}</span>
-                                        @else
-                                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700">{{ __('Inside') }}</span>
-                                        @endif
-                                    </td>
-                                    <td class="px-5 py-4 text-right space-x-2 whitespace-nowrap">
-                                        <button type="button" onclick="openViewModal({{ $visitor->id }})"
-                                           class="text-xs font-semibold text-blue-600 hover:text-blue-800">
-                                            {{ __('View') }}
-                                        </button>
-                                        <button type="button" onclick="openEditModal({{ $visitor->id }})"
-                                           class="text-xs font-semibold text-yellow-600 hover:text-yellow-800">
-                                            {{ __('Edit') }}
-                                        </button>
-                                        @unless ($visitor->time_out)
-                                            <form method="POST" action="{{ route('visitors.checkout', $visitor) }}" class="inline">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="text-xs font-semibold text-emerald-700 hover:text-emerald-900">
-                                                    {{ __('Check Out') }}
-                                                </button>
-                                            </form>
-                                        @endunless
-                                        <form method="POST" action="{{ route('visitors.destroy', $visitor) }}" class="inline"
-                                        onsubmit="return confirm('{{ __('Are you sure you want to delete this record?') }}')">
+            <div class="bg-white shadow-sm sm:rounded-lg overflow-hidden w-full">
+                <!-- Removed overflow-x-auto to hide horizontal scrollbar -->
+                <table class="w-full table-fixed divide-y divide-gray-200 text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <!-- Adjusted column widths to fit perfectly -->
+                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[11%]">{{ __('Name') }}</th>
+                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[11%]">{{ __('Contact No.') }}</th>
+                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[12%]">{{ __('From / Address') }}</th>
+                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[12%]">{{ __('Person to Visit') }}</th>
+                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[10%]">{{ __('Purpose') }}</th>
+                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[10%]">{{ __('Time In') }}</th>
+                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[10%]">{{ __('Time Out') }}</th>
+                            <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[9%]">{{ __('Status') }}</th>
+                            <th class="px-4 py-4 text-right font-semibold text-gray-600 uppercase text-xs w-[15%]">{{ __('Actions') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse ($visitors as $visitor)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-4 font-medium text-gray-800 truncate">{{ $visitor->name }}</td>
+                                <td class="px-4 py-4 text-gray-600">{{ $visitor->contact_no ?? '—' }}</td>
+                                <td class="px-4 py-4 text-gray-600 truncate">{{ $visitor->address }}</td>
+                                <td class="px-4 py-4 text-gray-600 truncate">{{ $visitor->person_to_visit }}</td>
+                                <td class="px-4 py-4 text-gray-600 truncate">{{ $visitor->purpose }}</td>
+                                <td class="px-4 py-4 text-gray-600 text-xs">{{ $visitor->time_in->format('M d, Y h:i A') }}</td>
+                                <td class="px-4 py-4 text-gray-600 text-xs">
+                                    {{ $visitor->time_out ? $visitor->time_out->format('M d, Y h:i A') : '—' }}
+                                </td>
+                                <td class="px-4 py-4">
+                                    @if ($visitor->time_out)
+                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600">{{ __('Checked Out') }}</span>
+                                    @else
+                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700">{{ __('Inside') }}</span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-4 text-right space-x-1.5 whitespace-nowrap">
+                                    <button type="button" onclick="openViewModal({{ $visitor->id }})"
+                                       class="text-xs font-semibold text-blue-600 hover:text-blue-800">
+                                        {{ __('View') }}
+                                    </button>
+                                    <button type="button" onclick="openEditModal({{ $visitor->id }})"
+                                       class="text-xs font-semibold text-yellow-600 hover:text-yellow-800">
+                                        {{ __('Edit') }}
+                                    </button>
+                                    @unless ($visitor->time_out)
+                                        <form method="POST" action="{{ route('visitors.checkout', $visitor) }}" class="inline">
                                             @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-xs font-semibold text-red-600 hover:text-red-800">
-                                                {{ __('Delete') }}
+                                            @method('PATCH')
+                                            <button type="submit" class="text-xs font-semibold text-emerald-700 hover:text-emerald-900">
+                                                {{ __('Check Out') }}
                                             </button>
                                         </form>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="9" class="px-5 py-10 text-center text-gray-400">
-                                        {{ __('No records found.') }}
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                                    @endunless
+                                    <form method="POST" action="{{ route('visitors.destroy', $visitor) }}" class="inline"
+                                    onsubmit="return confirm('{{ __('Are you sure you want to delete this record?') }}')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-xs font-semibold text-red-600 hover:text-red-800">
+                                            {{ __('Delete') }}
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="9" class="px-5 py-10 text-center text-gray-400">
+                                    {{ __('No records found.') }}
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
                 <div class="px-5 py-3 border-t border-gray-100">
                     {{ $visitors->links() }}
                 </div>
@@ -129,7 +129,7 @@
         </div>
     </div>
 
-    <!-- Modals & Scripts (nandito pa rin lahat) -->
+    <!-- Modals & Scripts -->
     <div id="add-visitor-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="absolute inset-0 bg-black/50" onclick="document.getElementById('add-visitor-modal').classList.add('hidden')"></div>
         <div class="relative bg-white rounded-lg shadow-xl w-full max-w-lg p-6">
