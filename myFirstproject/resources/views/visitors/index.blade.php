@@ -50,11 +50,9 @@
             </form>
 
             <div class="bg-white shadow-sm sm:rounded-lg overflow-hidden w-full">
-                <!-- Removed overflow-x-auto to hide horizontal scrollbar -->
                 <table class="w-full table-fixed divide-y divide-gray-200 text-sm">
                     <thead class="bg-gray-50">
                         <tr>
-                            <!-- Adjusted column widths to fit perfectly -->
                             <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[11%]">{{ __('Name') }}</th>
                             <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[11%]">{{ __('Contact No.') }}</th>
                             <th class="px-4 py-4 text-left font-semibold text-gray-600 uppercase text-xs w-[12%]">{{ __('From / Address') }}</th>
@@ -129,52 +127,117 @@
         </div>
     </div>
 
-    <!-- Modals & Scripts -->
+    <!-- Add Visitor Modal - Fixed Size & Fit -->
     <div id="add-visitor-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="absolute inset-0 bg-black/50" onclick="document.getElementById('add-visitor-modal').classList.add('hidden')"></div>
-        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ __('Add New Visitor') }}</h3>
-            <form method="POST" action="{{ route('visitors.store') }}" class="space-y-4">
+        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-md p-5">
+            <h3 class="text-base font-semibold text-gray-800 mb-3">{{ __('Add New Visitor') }}</h3>
+            <form method="POST" action="{{ route('visitors.store') }}" class="space-y-3">
                 @csrf
-                <div><x-input-label for="name" :value="__('Name')" /><x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name')" required autofocus /><x-input-error :messages="$errors->get('name')" class="mt-1" /></div>
-                <div><x-input-label for="contact_no" :value="__('Contact Number')" /><x-text-input id="contact_no" name="contact_no" type="text" class="mt-1 block w-full" :value="old('contact_no')" /><x-input-error :messages="$errors->get('contact_no')" class="mt-1" /></div>
-                <div><x-input-label for="id_type" :value="__('ID Type')" /><x-text-input id="id_type" name="id_type" type="text" class="mt-1 block w-full" :value="old('id_type')" placeholder="e.g. UMID, Driver's License" /><x-input-error :messages="$errors->get('id_type')" class="mt-1" /></div>
-                <div><x-input-label for="id_number" :value="__('ID Number')" /><x-text-input id="id_number" name="id_number" type="text" class="mt-1 block w-full" :value="old('id_number')" /><x-input-error :messages="$errors->get('id_number')" class="mt-1" /></div>
-                <div><x-input-label for="address" :value="__('From / Address')" /><x-text-input id="address" name="address" type="text" class="mt-1 block w-full" :value="old('address')" required /><x-input-error :messages="$errors->get('address')" class="mt-1" /></div>
-                <div><x-input-label for="person_to_visit" :value="__('Person to Visit')" /><x-text-input id="person_to_visit" name="person_to_visit" type="text" class="mt-1 block w-full" :value="old('person_to_visit')" required /><x-input-error :messages="$errors->get('person_to_visit')" class="mt-1" /></div>
-                <div><x-input-label for="purpose" :value="__('Purpose of Visit')" /><x-text-input id="purpose" name="purpose" type="text" class="mt-1 block w-full" :value="old('purpose')" required /><x-input-error :messages="$errors->get('purpose')" class="mt-1" /></div>
-                <p class="text-xs text-gray-400">{{ __('Entry time will be recorded automatically.') }}</p>
+                <div>
+                    <x-input-label for="name" :value="__('Name')" class="text-xs" />
+                    <x-text-input id="name" name="name" type="text" class="mt-1 block w-full text-sm py-1.5" :value="old('name')" required autofocus />
+                    <x-input-error :messages="$errors->get('name')" class="mt-1 text-xs" />
+                </div>
+
+                <div>
+                    <x-input-label for="contact_no" :value="__('Contact Number')" class="text-xs" />
+                    <x-text-input id="contact_no" name="contact_no" type="text" class="mt-1 block w-full text-sm py-1.5" :value="old('contact_no')" />
+                    <x-input-error :messages="$errors->get('contact_no')" class="mt-1 text-xs" />
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <x-input-label for="id_type" :value="__('ID Type')" class="text-xs" />
+                        <x-text-input id="id_type" name="id_type" type="text" class="mt-1 block w-full text-sm py-1.5" :value="old('id_type')" placeholder="UMID, License" />
+                        <x-input-error :messages="$errors->get('id_type')" class="mt-1 text-xs" />
+                    </div>
+                    <div>
+                        <x-input-label for="id_number" :value="__('ID Number')" class="text-xs" />
+                        <x-text-input id="id_number" name="id_number" type="text" class="mt-1 block w-full text-sm py-1.5" :value="old('id_number')" />
+                        <x-input-error :messages="$errors->get('id_number')" class="mt-1 text-xs" />
+                    </div>
+                </div>
+
+                <div>
+                    <x-input-label for="address" :value="__('From / Address')" class="text-xs" />
+                    <x-text-input id="address" name="address" type="text" class="mt-1 block w-full text-sm py-1.5" :value="old('address')" required />
+                    <x-input-error :messages="$errors->get('address')" class="mt-1 text-xs" />
+                </div>
+
+                <div>
+                    <x-input-label for="person_to_visit" :value="__('Person to Visit')" class="text-xs" />
+                    <x-text-input id="person_to_visit" name="person_to_visit" type="text" class="mt-1 block w-full text-sm py-1.5" :value="old('person_to_visit')" required />
+                    <x-input-error :messages="$errors->get('person_to_visit')" class="mt-1 text-xs" />
+                </div>
+
+                <div>
+                    <x-input-label for="purpose" :value="__('Purpose of Visit')" class="text-xs" />
+                    <x-text-input id="purpose" name="purpose" type="text" class="mt-1 block w-full text-sm py-1.5" :value="old('purpose')" required />
+                    <x-input-error :messages="$errors->get('purpose')" class="mt-1 text-xs" />
+                </div>
+
+                <p class="text-xs text-gray-400 pt-1">{{ __('Entry time will be recorded automatically.') }}</p>
+
                 <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" onclick="document.getElementById('add-visitor-modal').classList.add('hidden')" class="px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50">{{ __('Cancel') }}</button>
-                    <x-primary-button>{{ __('Save') }}</x-primary-button>
+                    <button type="button" onclick="document.getElementById('add-visitor-modal').classList.add('hidden')"
+                            class="px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                        {{ __('Cancel') }}
+                    </button>
+                    <x-primary-button class="px-3 py-1.5 text-xs">{{ __('Save') }}</x-primary-button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- View Visitor Modal -->
     <div id="view-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="absolute inset-0 bg-black/50" onclick="document.getElementById('view-modal').classList.add('hidden')"></div>
-        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ __('Visitor Details') }}</h3>
-            <div id="view-content" class="space-y-2 text-sm text-gray-600"></div>
-            <div class="flex justify-end mt-6"><button type="button" onclick="document.getElementById('view-modal').classList.add('hidden')" class="px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50">{{ __('Close') }}</button></div>
+        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-md p-5">
+            <h3 class="text-base font-semibold text-gray-800 mb-3">{{ __('Visitor Details') }}</h3>
+            <div id="view-content" class="space-y-1.5 text-sm text-gray-600"></div>
+            <div class="flex justify-end mt-4">
+                <button type="button" onclick="document.getElementById('view-modal').classList.add('hidden')"
+                        class="px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                    {{ __('Close') }}
+                </button>
+            </div>
         </div>
     </div>
 
+    <!-- Edit Visitor Modal -->
     <div id="edit-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="absolute inset-0 bg-black/50" onclick="document.getElementById('edit-modal').classList.add('hidden')"></div>
-        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ __('Edit Visitor') }}</h3>
-            <form id="edit-form" method="POST" class="space-y-4">
+        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-md p-5">
+            <h3 class="text-base font-semibold text-gray-800 mb-3">{{ __('Edit Visitor') }}</h3>
+            <form id="edit-form" method="POST" class="space-y-3">
                 @csrf @method('PUT')
-                <div><x-input-label for="edit_name" :value="__('Name')" /><x-text-input id="edit_name" name="name" type="text" class="mt-1 block w-full" required /></div>
-                <div><x-input-label for="edit_contact_no" :value="__('Contact Number')" /><x-text-input id="edit_contact_no" name="contact_no" type="text" class="mt-1 block w-full" /></div>
-                <div><x-input-label for="edit_address" :value="__('From / Address')" /><x-text-input id="edit_address" name="address" type="text" class="mt-1 block w-full" required /></div>
-                <div><x-input-label for="edit_person_to_visit" :value="__('Person to Visit')" /><x-text-input id="edit_person_to_visit" name="person_to_visit" type="text" class="mt-1 block w-full" required /></div>
-                <div><x-input-label for="edit_purpose" :value="__('Purpose of Visit')" /><x-text-input id="edit_purpose" name="purpose" type="text" class="mt-1 block w-full" required /></div>
+                <div>
+                    <x-input-label for="edit_name" :value="__('Name')" class="text-xs" />
+                    <x-text-input id="edit_name" name="name" type="text" class="mt-1 block w-full text-sm py-1.5" required />
+                </div>
+                <div>
+                    <x-input-label for="edit_contact_no" :value="__('Contact Number')" class="text-xs" />
+                    <x-text-input id="edit_contact_no" name="contact_no" type="text" class="mt-1 block w-full text-sm py-1.5" />
+                </div>
+                <div>
+                    <x-input-label for="edit_address" :value="__('From / Address')" class="text-xs" />
+                    <x-text-input id="edit_address" name="address" type="text" class="mt-1 block w-full text-sm py-1.5" required />
+                </div>
+                <div>
+                    <x-input-label for="edit_person_to_visit" :value="__('Person to Visit')" class="text-xs" />
+                    <x-text-input id="edit_person_to_visit" name="person_to_visit" type="text" class="mt-1 block w-full text-sm py-1.5" required />
+                </div>
+                <div>
+                    <x-input-label for="edit_purpose" :value="__('Purpose of Visit')" class="text-xs" />
+                    <x-text-input id="edit_purpose" name="purpose" type="text" class="mt-1 block w-full text-sm py-1.5" required />
+                </div>
                 <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" onclick="document.getElementById('edit-modal').classList.add('hidden')" class="px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50">{{ __('Cancel') }}</button>
-                    <x-primary-button>{{ __('Update') }}</x-primary-button>
+                    <button type="button" onclick="document.getElementById('edit-modal').classList.add('hidden')"
+                            class="px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                        {{ __('Cancel') }}
+                    </button>
+                    <x-primary-button class="px-3 py-1.5 text-xs">{{ __('Update') }}</x-primary-button>
                 </div>
             </form>
         </div>
