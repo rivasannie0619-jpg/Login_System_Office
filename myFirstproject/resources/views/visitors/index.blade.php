@@ -5,19 +5,19 @@
                 {{ __('Guest & Visitor Log') }}
             </h2>
             <div class="flex items-center gap-2">
-                <!-- Report Button with Hover -->
+                <!-- Report Button (Premium Hover & Lift Effect) -->
                 <a href="{{ route('visitors.report') }}"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-slate-200 rounded-lg font-bold text-xs text-slate-500 uppercase tracking-wider hover:bg-slate-50 hover:text-slate-700 active:scale-95 transition-all duration-150">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-slate-200 rounded-lg font-bold text-xs text-slate-500 uppercase tracking-wider shadow-sm hover:shadow-md hover:bg-slate-50 hover:text-slate-700 hover:-translate-y-0.5 active:scale-95 transition-all duration-150 transform">
                     {{ __('Report') }}
                 </a>
                 
-                <!-- Print Button with Hover -->
+                <!-- Print Button (Premium Hover & Lift Effect) -->
                 <a href="{{ route('visitors.print', request()->query()) }}" target="_blank"
-                   class="inline-flex items-center px-4 py-2 bg-white border border-slate-200 rounded-lg font-bold text-xs text-slate-500 uppercase tracking-wider hover:bg-slate-50 hover:text-slate-700 active:scale-95 transition-all duration-150">
+                   class="inline-flex items-center px-4 py-2 bg-white border border-slate-200 rounded-lg font-bold text-xs text-slate-500 uppercase tracking-wider shadow-sm hover:shadow-md hover:bg-slate-50 hover:text-slate-700 hover:-translate-y-0.5 active:scale-95 transition-all duration-150 transform">
                     {{ __('Print') }}
                 </a>
                 
-                <!-- + ADD VISITOR Button with Hover & Active Scale -->
+                <!-- + ADD VISITOR Button -->
                 <button type="button" onclick="document.getElementById('add-visitor-modal').classList.remove('hidden')"
                         class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-md shadow-indigo-500/20 hover:shadow-lg active:scale-95 transition-all duration-150 transform hover:-translate-y-0.5">
                     + {{ __('Add Visitor') }}
@@ -37,7 +37,7 @@
 
             <!-- Search & Filter Bar Section -->
             <form method="GET" action="{{ route('visitors.index') }}" class="flex items-center gap-2.5">
-                <!-- Search Input (Icon on Left - Non-overlapping) -->
+                <!-- Search Input -->
                 <div class="relative w-64 flex items-center">
                     <div class="absolute left-3 flex items-center pointer-events-none">
                         <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,15 +49,15 @@
                            class="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm transition-all duration-150">
                 </div>
 
-                <!-- Just "APPLY" Button with Hover & Action Feedback -->
+                <!-- APPLY Button (Premium Hover, Shadow & Lift Effect) -->
                 <button type="submit"
-                        class="inline-flex items-center px-5 py-2 bg-indigo-600 hover:bg-indigo-700 border border-transparent rounded-lg font-bold text-xs text-white uppercase tracking-wider shadow-sm hover:shadow active:scale-95 transition-all duration-150 whitespace-nowrap">
+                        class="inline-flex items-center px-5 py-2 bg-indigo-600 hover:bg-indigo-700 border border-transparent rounded-lg font-bold text-xs text-white uppercase tracking-wider shadow-sm hover:shadow-lg hover:shadow-indigo-500/20 active:scale-95 hover:-translate-y-0.5 transition-all duration-150 transform whitespace-nowrap">
                     {{ __('Apply') }}
                 </button>
                 
-                <!-- Reset Button with Hover & Action Feedback -->
+                <!-- RESET Button (Premium Hover, Shadow & Lift Effect) -->
                 <a href="{{ route('visitors.index') }}"
-                   class="inline-flex items-center px-5 py-2 bg-white border border-slate-200 rounded-lg font-bold text-xs text-slate-400 uppercase tracking-wider hover:bg-slate-50 hover:text-slate-600 active:scale-95 transition-all duration-150 whitespace-nowrap">
+                   class="inline-flex items-center px-5 py-2 bg-white border border-slate-200 rounded-lg font-bold text-xs text-slate-400 uppercase tracking-wider shadow-sm hover:shadow-md hover:bg-slate-50 hover:text-slate-600 active:scale-95 hover:-translate-y-0.5 transition-all duration-150 transform whitespace-nowrap">
                     {{ __('Reset') }}
                 </a>
             </form>
@@ -75,7 +75,6 @@
                             <th class="px-4 py-4 text-left font-bold text-slate-400 uppercase text-xs w-[10%]">{{ __('Time In') }}</th>
                             <th class="px-4 py-4 text-left font-bold text-slate-400 uppercase text-xs w-[10%]">{{ __('Time Out') }}</th>
                             <th class="px-4 py-4 text-left font-bold text-slate-400 uppercase text-xs w-[10%]">{{ __('Status') }}</th>
-                            <!-- Binabaan ang width % para mas siksik at magkakatabi ang icons -->
                             <th class="px-4 py-4 text-right font-bold text-slate-400 uppercase text-xs w-[10%]">{{ __('Actions') }}</th>
                         </tr>
                     </thead>
@@ -108,27 +107,25 @@
                                     @endif
                                 </td>
 
-                                <!-- Actions Section: Mas siksik, malalaking icons at magkakatabi na! -->
+                                <!-- Actions Section -->
                                 <td class="px-4 py-4 text-right whitespace-nowrap">
                                     <div class="inline-flex items-center gap-0.5">
-                                        <!-- OUT Action Button (First in Order) -->
+                                        <!-- OUT Action Button -->
                                         @unless ($visitor->time_out)
                                             <form method="POST" action="{{ route('visitors.checkout', $visitor) }}" class="inline">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" title="Check Out" class="p-1 rounded-md bg-emerald-50 text-emerald-600 hover:bg-emerald-100 active:scale-90 transition-all">
-                                                    <!-- Pinamalaki sa w-5 h-5 -->
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
                                                     </svg>
                                                 </button>
                                             </form>
                                         @else
-                                            <!-- Perfect Alignment Spacer para hindi umalog ang mga katabing buttons -->
                                             <div class="w-7 h-7"></div>
                                         @endunless
 
-                                        <!-- View Icon (Round Light Blue) -->
+                                        <!-- View Icon -->
                                         <button type="button" onclick="openViewModal({{ $visitor->id }})" title="View"
                                            class="p-1 rounded-md bg-blue-50 text-blue-600 hover:bg-blue-100 active:scale-90 transition-all">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,7 +134,7 @@
                                             </svg>
                                         </button>
 
-                                        <!-- Edit Icon (Round Light Indigo) -->
+                                        <!-- Edit Icon -->
                                         <button type="button" onclick="openEditModal({{ $visitor->id }})" title="Edit"
                                            class="p-1 rounded-md bg-indigo-50 text-indigo-600 hover:bg-indigo-100 active:scale-90 transition-all">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,7 +142,7 @@
                                             </svg>
                                         </button>
 
-                                        <!-- Delete Icon (Round Light Red) -->
+                                        <!-- Delete Icon -->
                                         <form method="POST" action="{{ route('visitors.destroy', $visitor) }}" class="inline"
                                               onsubmit="return confirm('{{ __('Are you sure you want to delete this record?') }}')">
                                             @csrf
@@ -195,9 +192,21 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
+                    <!-- Dropdown for ID Type -->
                     <div>
                         <x-input-label for="id_type" :value="__('ID Type')" class="text-xs" />
-                        <x-text-input id="id_type" name="id_type" type="text" class="mt-1 block w-full text-sm py-1.5" :value="old('id_type')" placeholder="UMID, License" />
+                        <select id="id_type" name="id_type" 
+                                class="mt-1 block w-full text-sm py-1.5 border border-slate-200 rounded-lg shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-slate-700">
+                            <option value="">{{ __('Select ID Type') }}</option>
+                            <option value="National ID" {{ old('id_type') == 'National ID' ? 'selected' : '' }}>National ID</option>
+                            <option value="UMID" {{ old('id_type') == 'UMID' ? 'selected' : '' }}>UMID</option>
+                            <option value="Driver License" {{ old('id_type') == 'Driver License' ? 'selected' : '' }}>Driver's License</option>
+                            <option value="Passport" {{ old('id_type') == 'Passport' ? 'selected' : '' }}>Passport</option>
+                            <option value="SSS / GSIS ID" {{ old('id_type') == 'SSS / GSIS ID' ? 'selected' : '' }}>SSS / GSIS ID</option>
+                            <option value="Postal ID" {{ old('id_type') == 'Postal ID' ? 'selected' : '' }}>Postal ID</option>
+                            <option value="PRC ID" {{ old('id_type') == 'PRC ID' ? 'selected' : '' }}>PRC ID</option>
+                            <option value="School / Company ID" {{ old('id_type') == 'School / Company ID' ? 'selected' : '' }}>School / Company ID</option>
+                        </select>
                         <x-input-error :messages="$errors->get('id_type')" class="mt-1 text-xs" />
                     </div>
                     <div>
@@ -219,9 +228,20 @@
                     <x-input-error :messages="$errors->get('person_to_visit')" class="mt-1 text-xs" />
                 </div>
 
+                <!-- Dropdown for Purpose of Visit -->
                 <div>
                     <x-input-label for="purpose" :value="__('Purpose of Visit')" class="text-xs" />
-                    <x-text-input id="purpose" name="purpose" type="text" class="mt-1 block w-full text-sm py-1.5" :value="old('purpose')" required />
+                    <select id="purpose" name="purpose" required
+                            class="mt-1 block w-full text-sm py-1.5 border border-slate-200 rounded-lg shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-slate-700">
+                        <option value="">{{ __('Select Purpose') }}</option>
+                        <option value="Meeting" {{ old('purpose') == 'Meeting' ? 'selected' : '' }}>Meeting</option>
+                        <option value="Job Interview" {{ old('purpose') == 'Job Interview' ? 'selected' : '' }}>Job Interview</option>
+                        <option value="Personal Visit" {{ old('purpose') == 'Personal Visit' ? 'selected' : '' }}>Personal Visit</option>
+                        <option value="Delivery / Courier" {{ old('purpose') == 'Delivery / Courier' ? 'selected' : '' }}>Delivery / Courier</option>
+                        <option value="Maintenance / Repair" {{ old('purpose') == 'Maintenance / Repair' ? 'selected' : '' }}>Maintenance / Repair</option>
+                        <option value="Official Business" {{ old('purpose') == 'Official Business' ? 'selected' : '' }}>Official Business</option>
+                        <option value="Other" {{ old('purpose') == 'Other' ? 'selected' : '' }}>Other</option>
+                    </select>
                     <x-input-error :messages="$errors->get('purpose')" class="mt-1 text-xs" />
                 </div>
 
@@ -268,6 +288,27 @@
                     <x-input-label for="edit_contact_no" :value="__('Contact Number')" class="text-xs" />
                     <x-text-input id="edit_contact_no" name="contact_no" type="text" class="mt-1 block w-full text-sm py-1.5" />
                 </div>
+                <!-- Edit ID Type Dropdown -->
+                <div>
+                    <x-input-label for="edit_id_type" :value="__('ID Type')" class="text-xs" />
+                    <select id="edit_id_type" name="id_type" 
+                            class="mt-1 block w-full text-sm py-1.5 border border-slate-200 rounded-lg shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-slate-700">
+                        <option value="">{{ __('Select ID Type') }}</option>
+                        <option value="National ID">National ID</option>
+                        <option value="UMID">UMID</option>
+                        <option value="Driver License">Driver's License</option>
+                        <option value="Passport">Passport</option>
+                        <option value="SSS / GSIS ID">SSS / GSIS ID</option>
+                        <option value="Postal ID">Postal ID</option>
+                        <option value="PRC ID">PRC ID</option>
+                        <option value="School / Company ID">School / Company ID</option>
+                    </select>
+                </div>
+                <!-- Edit ID Number -->
+                <div>
+                    <x-input-label for="edit_id_number" :value="__('ID Number')" class="text-xs" />
+                    <x-text-input id="edit_id_number" name="id_number" type="text" class="mt-1 block w-full text-sm py-1.5" />
+                </div>
                 <div>
                     <x-input-label for="edit_address" :value="__('From / Address')" class="text-xs" />
                     <x-text-input id="edit_address" name="address" type="text" class="mt-1 block w-full text-sm py-1.5" required />
@@ -276,9 +317,20 @@
                     <x-input-label for="edit_person_to_visit" :value="__('Person to Visit')" class="text-xs" />
                     <x-text-input id="edit_person_to_visit" name="person_to_visit" type="text" class="mt-1 block w-full text-sm py-1.5" required />
                 </div>
+                <!-- Edit Purpose Dropdown -->
                 <div>
                     <x-input-label for="edit_purpose" :value="__('Purpose of Visit')" class="text-xs" />
-                    <x-text-input id="edit_purpose" name="purpose" type="text" class="mt-1 block w-full text-sm py-1.5" required />
+                    <select id="edit_purpose" name="purpose" required
+                            class="mt-1 block w-full text-sm py-1.5 border border-slate-200 rounded-lg shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-slate-700">
+                        <option value="">{{ __('Select Purpose') }}</option>
+                        <option value="Meeting">Meeting</option>
+                        <option value="Job Interview">Job Interview</option>
+                        <option value="Personal Visit">Personal Visit</option>
+                        <option value="Delivery / Courier">Delivery / Courier</option>
+                        <option value="Maintenance / Repair">Maintenance / Repair</option>
+                        <option value="Official Business">Official Business</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
                 <div class="flex justify-end gap-2 pt-2">
                     <button type="button" onclick="document.getElementById('edit-modal').classList.add('hidden')"
@@ -317,6 +369,8 @@
             const visitor = await res.json();
             document.getElementById('edit_name').value = visitor.name;
             document.getElementById('edit_contact_no').value = visitor.contact_no || '';
+            document.getElementById('edit_id_type').value = visitor.id_type || '';
+            document.getElementById('edit_id_number').value = visitor.id_number || '';
             document.getElementById('edit_address').value = visitor.address;
             document.getElementById('edit_person_to_visit').value = visitor.person_to_visit;
             document.getElementById('edit_purpose').value = visitor.purpose;
