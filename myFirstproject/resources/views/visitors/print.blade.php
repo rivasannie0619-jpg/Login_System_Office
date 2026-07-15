@@ -9,8 +9,8 @@
         h1 { font-size: 20px; margin-bottom: 2px; }
         .subtitle { color: #6b7280; font-size: 12px; margin-bottom: 16px; }
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        th, td { border: 1px solid #d1d5db; padding: 6px 8px; text-align: left; }
-        th { background: #f3f4f6; text-transform: uppercase; font-size: 10px; letter-spacing: .03em; }
+        th, td { border: 1px solid #d1d5db; padding: 6px 8px; text-align: left; vertical-align: top; }
+        th { background: #f3f4f6; text-transform: uppercase; font-size: 10px; letter-spacing: .03em; white-space: nowrap; }
         .status-in { color: #047857; font-weight: bold; }
         .status-out { color: #6b7280; }
         .toolbar { margin-bottom: 16px; }
@@ -20,6 +20,9 @@
         }
         @media print {
             .toolbar { display: none; }
+            body { margin: 12px; }
+            table { font-size: 11px; }
+            th, td { padding: 5px 6px; }
         }
     </style>
 </head>
@@ -27,39 +30,59 @@
     <div class="toolbar">
         <button onclick="window.print()">Print</button>
     </div>
-
+ 
     <h1>Guest &amp; Visitor Log</h1>
-    <div class="subtitle">Nilimbag: {{ now()->format('M d, Y h:i A') }} &middot; Kabuuang tala: {{ $visitors->count() }}</div>
-
+    <div class="subtitle">
+        Printed: {{ now()->format('M d, Y h:i A') }} &middot; 
+        Total Records: {{ $visitors->count() }}
+        @if(isset($filters['range']) && $filters['range'])
+            &middot; Range: 
+            @switch($filters['range'])
+                @case('today') {{ __('Today') }} @break
+                @case('week') {{ __('This Week') }} @break
+                @case('month') {{ __('This Month') }} @break
+            @endswitch
+        @endif
+        @if(isset($filters['search']) && $filters['search'])
+            &middot; Search: "{{ $filters['search'] }}"
+        @endif
+    </div>
+ 
     <table>
         <thead>
             <tr>
-                <th>Pangalan</th>
-                <th>Pinanggalingan</th>
-                <th>Bibisitahin</th>
-                <th>Layunin</th>
+                <th>Name</th>
+                <th>Contact Number</th>
+                <th>Address</th>
+                <th>Person to Visit</th>
+                <th>Purpose</th>
                 <th>Time In</th>
                 <th>Time Out</th>
-                <th>Katayuan</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($visitors as $visitor)
                 <tr>
                     <td>{{ $visitor->name }}</td>
+                    <td>{{ $visitor->contact_no ?? '—' }}</td>
                     <td>{{ $visitor->address }}</td>
                     <td>{{ $visitor->person_to_visit }}</td>
                     <td>{{ $visitor->purpose }}</td>
                     <td>{{ $visitor->time_in->format('M d, Y h:i A') }}</td>
                     <td>{{ $visitor->time_out ? $visitor->time_out->format('M d, Y h:i A') : '—' }}</td>
                     <td class="{{ $visitor->time_out ? 'status-out' : 'status-in' }}">
-                        {{ $visitor->time_out ? 'Nakalabas' : 'Nasa Loob' }}
+                        {{ $visitor->time_out ? 'Checked Out' : 'Currently In' }}
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="7">Walang tala.</td></tr>
+                <tr><td colspan="8" class="text-center">No records found.</td></tr>
             @endforelse
         </tbody>
     </table>
+ 
+    <div style="margin-top: 32px; font-size: 11px; color: #6b7280;">
+        Prepared by: _________________________ &nbsp;&nbsp;&nbsp;&nbsp; Date: _________________________
+    </div>
 </body>
 </html>

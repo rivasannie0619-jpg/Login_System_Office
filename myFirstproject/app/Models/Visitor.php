@@ -11,22 +11,30 @@ class Visitor extends Model
 {
     use HasFactory;
 
+    // ✅ Idinagdag ang mga bagong patlang dito — HINDI binura ang luma
     protected $fillable = [
         'name',
+        'contact_no',    // bago
+        'id_type',       // bago
+        'id_number',     // bago
         'address',
         'person_to_visit',
         'purpose',
         'visit_date',
         'time_in',
         'time_out',
+        'status',        // bago
     ];
 
+    // ✅ Idinagdag ang casts para sa mga bagong patlang
     protected $casts = [
         'visit_date' => 'date',
         'time_in' => 'datetime',
         'time_out' => 'datetime',
+        'status' => 'string', // bago
     ];
 
+    // --- NANDITO PA RIN ANG LAHAT NG EXISTING FUNCTIONS MO ---
     public function scopeCurrentlyIn(Builder $query): Builder
     {
         return $query->whereNull('time_out');
@@ -47,7 +55,10 @@ class Visitor extends Model
             $q->where('name', 'like', "%{$term}%")
                 ->orWhere('person_to_visit', 'like', "%{$term}%")
                 ->orWhere('address', 'like', "%{$term}%")
-                ->orWhere('purpose', 'like', "%{$term}%");
+                ->orWhere('purpose', 'like', "%{$term}%")
+                // ✅ Isinama na rin sa search ang contact at ID para mas kumpleto
+                ->orWhere('contact_no', 'like', "%{$term}%")
+                ->orWhere('id_number', 'like', "%{$term}%");
         });
     }
 
